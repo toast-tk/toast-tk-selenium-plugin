@@ -1,5 +1,7 @@
 package com.synaptix.toast.automation.driver.web;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -15,7 +17,7 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 	private int defaultTimeout = 1000;
 
 	public SeleniumSynchronizedDriver() {
-		this.driver = DriverFactory.getFactory().getFirefoxDriver();
+		this.driver = DriverFactory.getFactory().getChromeDriver();
 		// GetEval("selenium.browserbot.setShouldHighlightElement(true)");
 	}
 
@@ -54,7 +56,7 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 		String demoLoginUrl) {
 		driver.get(demoLoginUrl);
 	}
-
+	
 	@Override
 	public WebDriver getWebDriver() {
 		return driver;
@@ -71,17 +73,31 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 		});
 	}
 
-	// In Selenium RC, you can use Highlight(locator),
-	// which will locate the element and highlight it,
-	// or you can use
-// GetEval("selenium.browserbot.setShouldHighlightElement(true)"),
-	// which turns on the automatic highlighting every time an element is
-// located
-	// (the behavior you know from Selenium IDE).
 	@Override
 	public WebElement find(
 		IWebElement element) {
 		WebElement doSynchronizedSelection = doSynchronizedSelection(element);
 		return doSynchronizedSelection;
 	}
+	
+	@Override
+	public List<WebElement> findAll(
+		IWebElement element) {
+		List<WebElement> result = doSynchronizedMultipleSelection(element);
+		return result;
+	}
+
+	private List<WebElement> doSynchronizedMultipleSelection(IWebElement element) {
+		SeleniumHelper.waitCondition(defaultRepeat, defaultTimeout, new IMiniResult() {
+
+			@Override
+			public boolean result() {
+				return SeleniumHelper.positionSelect(driver, element) != null;
+			}
+		});
+		List<WebElement> result = SeleniumHelper.selectAll(driver, element);
+		return result;
+	}
+	
+	
 }

@@ -1,5 +1,7 @@
 package com.synaptix.toast.automation.driver.web;
 
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -72,5 +74,25 @@ public class SeleniumHelper {
 			default :
 				return null;
 		}
+	}
+
+	public static List<WebElement> selectAll(WebDriver driver,
+			IWebElement item) {
+		List<WebElement> elements = null;
+		try {
+			switch(item.getMethod()) {
+				case CSS :
+					return driver.findElements(By.cssSelector(item.getLocator()));
+				case XPATH :
+					return driver.findElements(By.xpath(item.getLocator()));
+				default :
+					return null;
+			}
+		}
+		catch(IndexOutOfBoundsException e) {
+			System.err.println("Locator: " + item.getLocator() + " - Position: " + item.getPosition());
+			e.printStackTrace();
+		}
+		return elements;
 	}
 }
