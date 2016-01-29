@@ -73,7 +73,7 @@ public abstract class AbstractWebActionAdapter {
 			WebContainerElement container = (WebContainerElement)repo.getUserVariables().get(varName);
 			String containerName = container.getWrappedElement().getName();
 			String pageName = StringUtils.split(containerName, ":")[0];
-			IFeedableWebPage page = repo.getPage(pageName);
+			IFeedableWebPage page = repo.getWebPage(pageName);
 			IWebAutoElement<WebElement> autoElement = (IWebAutoElement<WebElement>)page.getAutoElement(fieldName);
 			WebElement findElement = container.getWebElement().findElement(By.cssSelector(autoElement.getWrappedElement().getLocator()));
 			findElement.click();
