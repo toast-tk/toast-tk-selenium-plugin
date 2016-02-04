@@ -71,11 +71,11 @@ public abstract class AbstractWebActionAdapter {
 			String varName = StringUtils.split(pageField, ".")[0];
 			String fieldName = StringUtils.split(pageField, ".")[1];
 			WebContainerElement container = (WebContainerElement)repo.getUserVariables().get(varName);
-			String containerName = container.getWrappedElement().getName();
+			String containerName = container.getDescriptor().getName();
 			String pageName = StringUtils.split(containerName, ":")[0];
 			IFeedableWebPage page = repo.getWebPage(pageName);
-			IWebAutoElement<WebElement> autoElement = (IWebAutoElement<WebElement>)page.getAutoElement(fieldName);
-			WebElement findElement = container.getWebElement().findElement(By.cssSelector(autoElement.getWrappedElement().getLocator()));
+			IWebAutoElement<WebElement> autoElement = (IWebAutoElement<WebElement>) page.getAutoElement(fieldName);
+			WebElement findElement = container.getWebElement().findElement(By.cssSelector(autoElement.getDescriptor().getLocator()));
 			findElement.click();
 			return new TestResult();
 		}
@@ -94,7 +94,7 @@ public abstract class AbstractWebActionAdapter {
 			IWebAutoElement<WebElement> pageFieldAuto,
 			String varName) throws Exception {
 		int componentPos = Integer.valueOf(pos) - 1;
-		pageFieldAuto.getWrappedElement().setPosition(componentPos);
+		pageFieldAuto.getDescriptor().setPosition(componentPos);
 		repo.getUserVariables().put(varName, pageFieldAuto);
 		return new TestResult();
 	}
@@ -119,12 +119,24 @@ public abstract class AbstractWebActionAdapter {
 				List<WebElement> allWebElements = element.getAllWebElements();
 				return new TestResult("Found " + allWebElements.size()+ " Element !", ResultKind.SUCCESS);
 			} else {
-				return new TestResult("No element found with locator: " + element.getWrappedElement().getLocator(), ResultKind.FAILURE);
+				return new TestResult("No element found with locator: " + element.getDescriptor().getLocator(), ResultKind.FAILURE);
 			}
 		}
 		return null;
 	}
 	
+	
+	@Action(id="get_inner_text", action = "Read " + WEB_COMPONENT, description = "")
+	public TestResult read(WebAutoElement element) {
+		if (element != null) {
+			if (element.getWebElement().isDisplayed()) {
+				return new TestResult("Element value: " + element.getWebElement().getText(), ResultKind.SUCCESS);
+			} else {
+				return new TestResult("No element found with locator: " + element.getDescriptor().getLocator(), ResultKind.FAILURE);
+			}
+		}
+		return null;
+	}
 	
 	@Action(id="close_browser", action = "Close browser", description = "")
 	public TestResult closeBrowser() {

@@ -7,18 +7,18 @@ import com.synaptix.toast.adapter.web.HasClickAction;
 import com.synaptix.toast.adapter.web.ISyncCall;
 import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
 import com.synaptix.toast.core.report.TestResult;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class WebLinkElement extends WebAutoElement implements HasClickAction {
 
 	public WebLinkElement(
-		IWebElement element,
+		IWebElementDescriptor element,
 		SeleniumSynchronizedDriver driver) {
 		super(element, driver);
 	}
 
 	public WebLinkElement(
-		IWebElement element) {
+		IWebElementDescriptor element) {
 		super(element);
 	}
 

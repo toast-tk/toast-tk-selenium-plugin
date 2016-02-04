@@ -7,25 +7,25 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class WebTableElement extends WebAutoElement {
 	
 	private static final String ROW_VALUE_SEPARATOR = "|";
 	
 	public WebTableElement(
-		IWebElement element,
+		IWebElementDescriptor element,
 		SeleniumSynchronizedDriver driver) {
 		super(element, driver);
 	}
 
 	public WebTableElement(
-		IWebElement element) {
+		IWebElementDescriptor element) {
 		super(element);
 	}
 
 	public int countLines() throws IllegalAccessException {
-		WebElement table = frontEndDriver.find(wrappedElement);
+		WebElement table = frontEndDriver.find(descriptor);
 		if(table == null || table.getTagName().toLowerCase().equals("table")){
 			throw new IllegalAccessException(table.getTagName() + " not supported !");
 		}else{
@@ -35,7 +35,7 @@ public class WebTableElement extends WebAutoElement {
 	}
 	
 	public int getColumnIndexByName(String columnTitle) throws IllegalAccessException {
-		WebElement table = frontEndDriver.find(wrappedElement);
+		WebElement table = frontEndDriver.find(descriptor);
 		if(table == null || table.getTagName().toLowerCase().equals("table")){
 			throw new IllegalAccessException(table.getTagName() + " not supported !");
 		}else{
@@ -75,7 +75,7 @@ public class WebTableElement extends WebAutoElement {
 	}
 	
 	public String getRow(int rowIndex) throws IllegalAccessException {
-		WebElement table = frontEndDriver.find(wrappedElement);
+		WebElement table = frontEndDriver.find(descriptor);
 		if(table == null || table.getTagName().toLowerCase().equals("table")){
 			throw new IllegalAccessException(table.getTagName() + " not supported !");
 		}else{
@@ -90,7 +90,7 @@ public class WebTableElement extends WebAutoElement {
 	}
 	
 	public boolean contains(String text) throws IllegalAccessException {
-		WebElement table = frontEndDriver.find(wrappedElement);
+		WebElement table = frontEndDriver.find(descriptor);
 		if(table == null || table.getTagName().toLowerCase().equals("table")){
 			throw new IllegalAccessException(table.getTagName() + " not supported !");
 		}else{

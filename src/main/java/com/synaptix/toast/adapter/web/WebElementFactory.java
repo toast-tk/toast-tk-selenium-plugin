@@ -9,13 +9,13 @@ import com.synaptix.toast.adapter.web.component.WebSelectElement;
 import com.synaptix.toast.adapter.web.component.WebTableElement;
 import com.synaptix.toast.core.adapter.AutoWebType;
 import com.synaptix.toast.core.runtime.IWebAutoElement;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class WebElementFactory implements IWebElementFactory{
 
 	@Override
 	public WebAutoElement getElement(
-		IWebElement e) {
+		IWebElementDescriptor e) {
 		switch(e.getType()) {
 			case button :
 				return new WebButtonElement(e);

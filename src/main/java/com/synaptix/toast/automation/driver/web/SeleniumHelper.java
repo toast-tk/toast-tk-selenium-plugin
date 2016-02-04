@@ -7,7 +7,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.synaptix.toast.automation.api.IMiniResult;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class SeleniumHelper {
 
@@ -40,7 +40,7 @@ public class SeleniumHelper {
 
 	public static WebElement positionSelect(
 		WebDriver driver,
-		IWebElement item) {
+		IWebElementDescriptor item) {
 		WebElement el = null;
 		try {
 			switch(item.getMethod()) {
@@ -63,7 +63,7 @@ public class SeleniumHelper {
 
 	public static WebElement singleSelect(
 		WebDriver driver,
-		IWebElement item) {
+		IWebElementDescriptor item) {
 		switch(item.getMethod()) {
 			case CSS :
 				return driver.findElement(By.cssSelector(item.getLocator()));
@@ -77,7 +77,7 @@ public class SeleniumHelper {
 	}
 
 	public static List<WebElement> selectAll(WebDriver driver,
-			IWebElement item) {
+			IWebElementDescriptor item) {
 		List<WebElement> elements = null;
 		try {
 			switch(item.getMethod()) {

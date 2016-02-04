@@ -6,7 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 import com.synaptix.toast.automation.api.IMiniResult;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement, WebDriver> {
 
@@ -40,7 +40,7 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 	}
 
 	public WebElement doSynchronizedSelection(
-		final IWebElement element) {
+		final IWebElementDescriptor element) {
 		SeleniumHelper.waitCondition(defaultRepeat, defaultTimeout, new IMiniResult() {
 
 			@Override
@@ -75,21 +75,20 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 
 	@Override
 	public WebElement find(
-		IWebElement element) {
+		IWebElementDescriptor element) {
 		WebElement doSynchronizedSelection = doSynchronizedSelection(element);
 		return doSynchronizedSelection;
 	}
 	
 	@Override
 	public List<WebElement> findAll(
-		IWebElement element) {
+		IWebElementDescriptor element) {
 		List<WebElement> result = doSynchronizedMultipleSelection(element);
 		return result;
 	}
 
-	private List<WebElement> doSynchronizedMultipleSelection(IWebElement element) {
+	private List<WebElement> doSynchronizedMultipleSelection(IWebElementDescriptor element) {
 		SeleniumHelper.waitCondition(defaultRepeat, defaultTimeout, new IMiniResult() {
-
 			@Override
 			public boolean result() {
 				return SeleniumHelper.positionSelect(driver, element) != null;

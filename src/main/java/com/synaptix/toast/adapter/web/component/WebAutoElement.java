@@ -8,69 +8,69 @@ import com.synaptix.toast.adapter.web.ISyncCall;
 import com.synaptix.toast.automation.driver.web.SynchronizedDriver;
 import com.synaptix.toast.core.runtime.IFeedableWebPage;
 import com.synaptix.toast.core.runtime.IWebAutoElement;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class WebAutoElement implements IWebAutoElement<WebElement>{
 
 	protected IFeedableWebPage container;
 
-	protected IWebElement wrappedElement;
+	protected IWebElementDescriptor descriptor;
 
 	protected SynchronizedDriver<WebElement, ?> frontEndDriver;
 
-	protected void setWrappedElement(
-		IWebElement wrappedElement) {
-		this.wrappedElement = wrappedElement;
+	protected void setDescriptor(
+		IWebElementDescriptor wrappedElement) {
+		this.descriptor = wrappedElement;
 	}
 
 	protected SynchronizedDriver<WebElement, ?> getFrontEndDriver() {
 		return frontEndDriver;
 	}
 
-	public void setFrontEndDriver(
+	public void setDriver(
 			SynchronizedDriver frontEndDriver) {
 		this.frontEndDriver = frontEndDriver;
 	}
 
 	public WebAutoElement(
-		IWebElement element,
+		IWebElementDescriptor element,
 		SynchronizedDriver driver) {
-		this.wrappedElement = element;
+		this.descriptor = element;
 		this.frontEndDriver = driver;
 	}
 
 	public WebAutoElement(
-		IWebElement element) {
-		this.wrappedElement = element;
+		IWebElementDescriptor element) {
+		this.descriptor = element;
 	}
 
 	public WebAutoElement() {
 	}
 
 	public boolean exists() {
-		return frontEndDriver.find(wrappedElement) != null;
+		return frontEndDriver.find(descriptor) != null;
 	}
 
 	@Override
 	public WebElement getWebElement() {
-		return frontEndDriver.find(wrappedElement);
+		return frontEndDriver.find(descriptor);
 	}
 	
 	@Override
 	public List<WebElement> getAllWebElements() {
-		return frontEndDriver.findAll(wrappedElement);
+		return frontEndDriver.findAll(descriptor);
 	}
 
 	protected void safeAction(ISyncCall res) {
-		WebElement find = frontEndDriver.find(wrappedElement);
+		WebElement find = frontEndDriver.find(descriptor);
 		if(find != null) {
 			res.execute(find);
 		}
 	}
 
 	@Override
-	public IWebElement getWrappedElement() {
-		return wrappedElement;
+	public IWebElementDescriptor getDescriptor() {
+		return descriptor;
 	}
 
 	@Override

@@ -5,25 +5,25 @@ import org.openqa.selenium.support.ui.Select;
 
 import com.synaptix.toast.adapter.web.HasSelect;
 import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.runtime.IWebElement;
+import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class WebSelectElement extends WebAutoElement implements HasSelect {
 
 	public WebSelectElement(
-		IWebElement element,
+		IWebElementDescriptor element,
 		SeleniumSynchronizedDriver driver) {
 		super(element, driver);
 	}
 
 	public WebSelectElement(
-		IWebElement element) {
+		IWebElementDescriptor element) {
 		super(element);
 	}
 
 	@Override
 	public void selectByValue(
 		String value) {
-		WebElement find = frontEndDriver.find(wrappedElement);
+		WebElement find = frontEndDriver.find(descriptor);
 		Select realSelect = new Select(find);
 		realSelect.selectByValue(value);
 	}
@@ -31,7 +31,7 @@ public class WebSelectElement extends WebAutoElement implements HasSelect {
 	@Override
 	public void selectByIndex(
 		int index) {
-		WebElement find = frontEndDriver.find(wrappedElement);
+		WebElement find = frontEndDriver.find(descriptor);
 		Select realSelect = new Select(find);
 		realSelect.selectByIndex(index);
 	}
