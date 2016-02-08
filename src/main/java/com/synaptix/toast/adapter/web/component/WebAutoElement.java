@@ -2,6 +2,7 @@ package com.synaptix.toast.adapter.web.component;
 
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.synaptix.toast.adapter.web.ISyncCall;
@@ -53,6 +54,11 @@ public class WebAutoElement implements IWebAutoElement<WebElement>{
 
 	@Override
 	public WebElement getWebElement() {
+		if(container != null && container.getDescriptor() != null){ //push error if it's not css
+			By cssSelector = By.cssSelector(this.descriptor.getLocator());
+			WebElement findElement = ((WebElement)container.getWebElement()).findElement(cssSelector);
+			return findElement;
+		}
 		return frontEndDriver.find(descriptor);
 	}
 	
@@ -81,6 +87,12 @@ public class WebAutoElement implements IWebAutoElement<WebElement>{
 	@Override
 	public void setContainer(IFeedableWebPage container) {
 		this.container = container;
+	}
+
+	@Override
+	public List<IWebElementDescriptor> getChildren() {
+		// NO OP ?
+		return null;
 	}
 
 }

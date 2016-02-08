@@ -5,24 +5,22 @@ import static com.synaptix.toast.core.adapter.ActionAdapterSentenceRef.WEB_COMPO
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.google.inject.Inject;
 import com.synaptix.toast.adapter.web.component.DefaultWebPage;
 import com.synaptix.toast.adapter.web.component.WebAutoElement;
-import com.synaptix.toast.adapter.web.component.WebContainerElement;
 import com.synaptix.toast.adapter.web.component.WebSelectElement;
 import com.synaptix.toast.automation.driver.web.DriverFactory;
 import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
 import com.synaptix.toast.core.adapter.ActionAdapterKind;
 import com.synaptix.toast.core.annotation.Action;
 import com.synaptix.toast.core.annotation.ActionAdapter;
-import com.synaptix.toast.core.report.TestResult;
-import com.synaptix.toast.core.report.TestResult.ResultKind;
+import com.synaptix.toast.core.report.ErrorResult;
+import com.synaptix.toast.core.report.SuccessResult;
 import com.synaptix.toast.core.runtime.IFeedableWebPage;
 import com.synaptix.toast.core.runtime.IWebAutoElement;
+import com.synaptix.toast.dao.domain.api.test.ITestResult;
 import com.synaptix.toast.runtime.IActionItemRepository;
 
 @ActionAdapter(name="default-web-driver", value= ActionAdapterKind.web)
@@ -34,6 +32,7 @@ public abstract class AbstractWebActionAdapter {
 	static{
 		System.setProperty("webdriver.chrome.driver", "D:\\Apps\\chromedriver.exe");
 	}
+	
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
@@ -44,103 +43,124 @@ public abstract class AbstractWebActionAdapter {
 	}
 
 	@Action(id="navigate", action = "Open browser at "+ VALUE_REGEX, description = "")
-	public TestResult openBrowserIn(String url) {
+	public ITestResult openBrowserIn(String url) {
 		if(!url.startsWith("http")){
 			url = "http://" + url;
-		}
+		} //handle also ssl
 		driver.getWebDriver().get(url);
-		return new TestResult();
+		return new SuccessResult();
 	}
 
 	@Action(id="type_in_web_component", action = "Type " + VALUE_REGEX + " in " + WEB_COMPONENT, description = "")
-	public TestResult typeIn(String text, IWebAutoElement<WebElement> pageField) throws Exception {
+	public ITestResult typeIn(String text, IWebAutoElement<WebElement> pageField) throws Exception {
 		pageField.getWebElement().sendKeys(text);
-		return new TestResult();
+		return new SuccessResult();
 	}
 
 	@Action(id="click_on_web_component", action = "Click on " + WEB_COMPONENT, description = "")
-	public TestResult ClickOn(IWebAutoElement<WebElement> pageField) throws Exception {
+	public ITestResult clickOn(IWebAutoElement<WebElement> pageField) throws Exception {
 		pageField.getWebElement().click();
-		return new TestResult();
+		return new SuccessResult();
 	}
 	
-
-	@Action(id="click_on_var", action = "Click on " + VALUE_REGEX, description = "")
-	public TestResult ClickOn(String pageField) throws Exception {
-		if(pageField.startsWith("$")){
-			String varName = StringUtils.split(pageField, ".")[0];
-			String fieldName = StringUtils.split(pageField, ".")[1];
-			WebContainerElement container = (WebContainerElement)repo.getUserVariables().get(varName);
-			String containerName = container.getDescriptor().getName();
-			String pageName = StringUtils.split(containerName, ":")[0];
-			IFeedableWebPage page = repo.getWebPage(pageName);
-			IWebAutoElement<WebElement> autoElement = (IWebAutoElement<WebElement>) page.getAutoElement(fieldName);
-			WebElement findElement = container.getWebElement().findElement(By.cssSelector(autoElement.getDescriptor().getLocator()));
-			findElement.click();
-			return new TestResult();
-		}
-		return new TestResult(pageField);
+	@Action(id="click_on_web_component_alias", action = "Click on " + VALUE_REGEX, description = "")
+	public ITestResult clickOn( String alias) throws Exception {
+		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		return clickOn(webAutoElement);
 	}
-
+	
 	@Action(id="select_in_web_component", action = "Select " + VALUE_REGEX + " in " + WEB_COMPONENT, description = "")
-	public TestResult SelectAtPos(String pos, IWebAutoElement<WebElement> pageFieldAuto) throws Exception {
+	public ITestResult selectAtPos(String pos, IWebAutoElement<WebElement> pageFieldAuto) throws Exception {
 		WebSelectElement pageField = (WebSelectElement) pageFieldAuto;
 		pageField.selectByIndex(Integer.valueOf(pos));
-		return new TestResult();
+		return new SuccessResult();
+	}
+	
+	@Action(id="select_in_web_component_alias", action = "Select " + VALUE_REGEX + " in " + VALUE_REGEX, description = "")
+	public ITestResult selectAtPos(String pos, String alias) throws Exception {
+		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		return selectAtPos(pos, webAutoElement);
+	}
+	
+	@Action(id="component_alias", action = "With " + WEB_COMPONENT + " as " + VALUE_REGEX, description = "")
+	public ITestResult setComponentAlias(IWebAutoElement<WebElement> pageFieldAuto, String alias) throws Exception {
+		repo.getWebComponents().put(alias, pageFieldAuto);
+		return new SuccessResult("Component stored with alias: " + alias);
 	}
 	
 	@Action(id="select_at_component", action = "Select the " + VALUE_REGEX + "th " + WEB_COMPONENT + " as " + VALUE_REGEX, description = "")
-	public TestResult SelectComponent(String pos, 
-			IWebAutoElement<WebElement> pageFieldAuto,
-			String varName) throws Exception {
+	public ITestResult selectComponent(String pos, IWebAutoElement<WebElement> pageFieldAuto, String varName) throws Exception {
 		int componentPos = Integer.valueOf(pos) - 1;
 		pageFieldAuto.getDescriptor().setPosition(componentPos);
-		repo.getUserVariables().put(varName, pageFieldAuto);
-		return new TestResult();
+		repo.getWebComponents().put(varName, pageFieldAuto);
+		return new SuccessResult();
+	}
+	
+	@Action(id="select_at_component_alias", action = "Select the " + VALUE_REGEX + "th " + VALUE_REGEX + " as " + VALUE_REGEX, description = "")
+	public ITestResult selectComponent(String pos, 
+			String alias,
+			String varName) throws Exception {
+		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		return selectComponent(pos, webAutoElement, varName);
 	}
 	
 	@Action(id="web_component_exists", action = WEB_COMPONENT + " exists", description = "")
-	public TestResult checkExist(WebAutoElement element) {
-		if (element != null) {
-			if (element.getWebElement().isDisplayed()) {
-				return new TestResult("Element is available !", ResultKind.SUCCESS);
-			} else {
-				return new TestResult("Element is not available !", ResultKind.FAILURE);
-			}
+	public ITestResult checkExist(WebAutoElement element) {
+		if (element.getWebElement().isDisplayed()) {
+			return new SuccessResult("Element is available !");
+		} else {
+			return new ErrorResult("Element is not available !");
 		}
-		return null;
 	}
 	
-
+	@Action(id="web_component_exists_alias", action = VALUE_REGEX + " exists", description = "")
+	public ITestResult checkExist(String alias) {
+		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		return checkExist(webAutoElement);
+	}
+	
 	@Action(id="count_component", action = "Count " + WEB_COMPONENT, description = "")
-	public TestResult count(WebAutoElement element) {
-		if (element != null) {
-			if (element.getWebElement().isDisplayed()) {
-				List<WebElement> allWebElements = element.getAllWebElements();
-				return new TestResult("Found " + allWebElements.size()+ " Element !", ResultKind.SUCCESS);
+	public ITestResult count(WebAutoElement element) {
+		if (element.getWebElement().isDisplayed()) {
+			List<WebElement> allWebElements = element.getAllWebElements();
+			return new SuccessResult("Found " + allWebElements.size()+ " Element !");
+		} else {
+			return new ErrorResult("No element found with locator: " + element.getDescriptor().getLocator());
+		}
+	}
+	
+	@Action(id="count_component_alias", action = "Count " + VALUE_REGEX, description = "")
+	public ITestResult count(String alias) {
+		IWebAutoElement<WebElement> iWebAutoElement = (IWebAutoElement<WebElement>)repo.getWebComponents().get(alias);
+		if (iWebAutoElement != null) {
+			if (iWebAutoElement.getWebElement().isDisplayed()) {
+				List<WebElement> allWebElements = iWebAutoElement.getAllWebElements();
+				return new SuccessResult("Found " + allWebElements.size()+ " Element !");
 			} else {
-				return new TestResult("No element found with locator: " + element.getDescriptor().getLocator(), ResultKind.FAILURE);
+				return new ErrorResult("No element found with locator: " + iWebAutoElement.getDescriptor().getLocator());
 			}
 		}
 		return null;
 	}
 	
+	@Action(id="get_inner_text_alias", action = "Read " + VALUE_REGEX, description = "")
+	public ITestResult read(String alias) {
+		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		return read(webAutoElement);
+	}
 	
 	@Action(id="get_inner_text", action = "Read " + WEB_COMPONENT, description = "")
-	public TestResult read(WebAutoElement element) {
-		if (element != null) {
-			if (element.getWebElement().isDisplayed()) {
-				return new TestResult("Element value: " + element.getWebElement().getText(), ResultKind.SUCCESS);
-			} else {
-				return new TestResult("No element found with locator: " + element.getDescriptor().getLocator(), ResultKind.FAILURE);
-			}
+	public ITestResult read(WebAutoElement element) {
+		if (element.getWebElement().isDisplayed()) {
+			return new SuccessResult("Element value: " + element.getWebElement().getText());
+		} else {
+			return new ErrorResult("No element found with locator: " + element.getDescriptor().getLocator());
 		}
-		return null;
 	}
 	
 	@Action(id="close_browser", action = "Close browser", description = "")
-	public TestResult closeBrowser() {
+	public ITestResult closeBrowser() {
 		driver.getWebDriver().quit();
-		return new TestResult();
+		return new SuccessResult();
 	}
 }
