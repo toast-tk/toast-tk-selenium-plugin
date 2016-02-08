@@ -29,10 +29,6 @@ public abstract class AbstractWebActionAdapter {
 	private final SeleniumSynchronizedDriver driver;
 	private final IActionItemRepository repo;
 
-	static{
-		System.setProperty("webdriver.chrome.driver", "D:\\Apps\\chromedriver.exe");
-	}
-	
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
@@ -46,7 +42,7 @@ public abstract class AbstractWebActionAdapter {
 	public ITestResult openBrowserIn(String url) {
 		if(!url.startsWith("http")){
 			url = "http://" + url;
-		} //handle also ssl
+		}
 		driver.getWebDriver().get(url);
 		return new SuccessResult();
 	}

@@ -2,6 +2,7 @@ package com.synaptix.toast.automation.driver.web;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
@@ -17,6 +18,8 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import com.gargoylesoftware.htmlunit.BrowserVersion;
 import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
+import com.synaptix.toast.adapter.constant.AdaptersConfig;
+import com.synaptix.toast.adapter.constant.AdaptersConfigProvider;
 import com.thoughtworks.selenium.DefaultSelenium;
 import com.thoughtworks.selenium.Selenium;
 
@@ -26,8 +29,11 @@ public class DriverFactory {
 	private static final DriverFactory INSTANCE = new DriverFactory();
 
 	private FirefoxDriver firefoxDriver;
+	private AdaptersConfig config;
 
 	private DriverFactory() {
+		AdaptersConfigProvider configProvider = new AdaptersConfigProvider();
+		this.config = configProvider.get();
 	}
 
 	public static DriverFactory getFactory() {
@@ -41,7 +47,15 @@ public class DriverFactory {
 	}
 
 	public ChromeDriver getChromeDriver() {
-		ChromeDriver driver = new ChromeDriver();
+		System.setProperty("webdriver.chrome.driver", config.getWebDriverPath());
+		final ChromeDriver driver;
+		if(config.getIsSSl()){
+			DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+			capabilities.setCapability("chrome.switches", Arrays.asList("--ignore-certificate-errors"));
+			driver = new ChromeDriver(capabilities);
+		}else{
+			driver = new ChromeDriver();
+		}
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 		return driver;
 	}
@@ -57,14 +71,8 @@ public class DriverFactory {
 	public RemoteWebDriver getRemoteDriver(
 		boolean canTakeScreenShots)
 		throws MalformedURLException {
-		RemoteWebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"),
-			DesiredCapabilities.firefox());
+		RemoteWebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.firefox());
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		// if(canTakeScreenShots){
-		// WebDriver augmentedDriver = new Augmenter().augment(driver);
-		// File screenshot = ((TakesScreenshot)
-// augmentedDriver).getScreenshotAs(OutputType.FILE);
-		// }
 		return driver;
 	}
 
@@ -83,28 +91,22 @@ public class DriverFactory {
 	}
 
 	static class MyHtmlDriver extends HtmlUnitDriver {
-
 		WebClient myClient;
-
 		public MyHtmlDriver() {
 			super();
 		}
-
 		public MyHtmlDriver(
 			BrowserVersion verion) {
 			super(verion);
 		}
-
 		public WebClient getClient() {
 			return myClient;
 		}
-
 		@Override
 		protected void get(
 			URL fullUrl) {
 			super.get(fullUrl);
 		}
-
 		@Override
 		protected WebClient modifyWebClient(
 			WebClient client) {
