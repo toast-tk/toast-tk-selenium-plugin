@@ -16,7 +16,7 @@ import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
 import com.synaptix.toast.core.adapter.ActionAdapterKind;
 import com.synaptix.toast.core.annotation.Action;
 import com.synaptix.toast.core.annotation.ActionAdapter;
-import com.synaptix.toast.core.report.ErrorResult;
+import com.synaptix.toast.core.report.FailureResult;
 import com.synaptix.toast.core.report.SuccessResult;
 import com.synaptix.toast.core.runtime.IFeedableWebPage;
 import com.synaptix.toast.core.runtime.IWebAutoElement;
@@ -105,7 +105,7 @@ public abstract class AbstractWebActionAdapter {
 		if (element.getWebElement().isDisplayed()) {
 			return new SuccessResult("Element is available !");
 		} else {
-			return new ErrorResult("Element is not available !");
+			return new FailureResult("Element is not available !");
 		}
 	}
 	
@@ -121,7 +121,7 @@ public abstract class AbstractWebActionAdapter {
 			List<WebElement> allWebElements = element.getAllWebElements();
 			return new SuccessResult("Found " + allWebElements.size()+ " Element !");
 		} else {
-			return new ErrorResult("No element found with locator: " + element.getDescriptor().getLocator());
+			return new FailureResult("No element found with locator: " + element.getDescriptor().getLocator());
 		}
 	}
 	
@@ -132,7 +132,7 @@ public abstract class AbstractWebActionAdapter {
 			List<WebElement> allWebElements = iWebAutoElement.getAllWebElements();
 			return new SuccessResult("Found " + allWebElements.size()+ " Element !");
 		} else {
-			return new ErrorResult("No element found with locator: " + iWebAutoElement.getDescriptor().getLocator());
+			return new FailureResult("No element found with locator: " + iWebAutoElement.getDescriptor().getLocator());
 		}
 	}
 	
@@ -147,7 +147,7 @@ public abstract class AbstractWebActionAdapter {
 		if (element.getWebElement().isDisplayed()) {
 			return new SuccessResult("Element value: " + element.getWebElement().getText());
 		} else {
-			return new ErrorResult("No element found with locator: " + element.getDescriptor().getLocator());
+			return new FailureResult("No element found with locator: " + element.getDescriptor().getLocator());
 		}
 	}
 	
