@@ -61,7 +61,7 @@ public abstract class AbstractWebActionAdapter {
 	
 	@Action(id="click_on_web_component_alias", action = "Click on " + VALUE_REGEX, description = "")
 	public ITestResult clickOn( String alias) throws Exception {
-		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		WebAutoElement webAutoElement = (WebAutoElement) repo.getWebComponents().get(alias);
 		return clickOn(webAutoElement);
 	}
 	
@@ -74,7 +74,7 @@ public abstract class AbstractWebActionAdapter {
 	
 	@Action(id="select_in_web_component_alias", action = "Select " + VALUE_REGEX + " in " + VALUE_REGEX, description = "")
 	public ITestResult selectAtPos(String pos, String alias) throws Exception {
-		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
+		WebAutoElement webAutoElement = (WebAutoElement) repo.getWebComponents().get(alias);
 		return selectAtPos(pos, webAutoElement);
 	}
 	
@@ -127,16 +127,13 @@ public abstract class AbstractWebActionAdapter {
 	
 	@Action(id="count_component_alias", action = "Count " + VALUE_REGEX, description = "")
 	public ITestResult count(String alias) {
-		IWebAutoElement<WebElement> iWebAutoElement = (IWebAutoElement<WebElement>)repo.getWebComponents().get(alias);
-		if (iWebAutoElement != null) {
-			if (iWebAutoElement.getWebElement().isDisplayed()) {
-				List<WebElement> allWebElements = iWebAutoElement.getAllWebElements();
-				return new SuccessResult("Found " + allWebElements.size()+ " Element !");
-			} else {
-				return new ErrorResult("No element found with locator: " + iWebAutoElement.getDescriptor().getLocator());
-			}
+		WebAutoElement iWebAutoElement = (WebAutoElement) repo.getWebComponents().get(alias);
+		if (iWebAutoElement.getWebElement().isDisplayed()) {
+			List<WebElement> allWebElements = iWebAutoElement.getAllWebElements();
+			return new SuccessResult("Found " + allWebElements.size()+ " Element !");
+		} else {
+			return new ErrorResult("No element found with locator: " + iWebAutoElement.getDescriptor().getLocator());
 		}
-		return null;
 	}
 	
 	@Action(id="get_inner_text_alias", action = "Read " + VALUE_REGEX, description = "")

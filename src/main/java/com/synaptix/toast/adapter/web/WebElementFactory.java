@@ -11,7 +11,7 @@ import com.synaptix.toast.core.adapter.AutoWebType;
 import com.synaptix.toast.core.runtime.IWebAutoElement;
 import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
-public class WebElementFactory implements IWebElementFactory{
+public class WebElementFactory implements IWebComponentFactory{
 
 	@Override
 	public WebAutoElement getElement(
