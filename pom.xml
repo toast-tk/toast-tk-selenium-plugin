@@ -162,7 +162,7 @@
 			<artifactId>selenium-server</artifactId>
 			<version>${selenium.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.synaptix.toast</groupId>
 			<artifactId>toast-tk-adapters-api</artifactId>
@@ -205,4 +205,10 @@
 			</distributionManagement>
 		</profile>
 	</profiles>
+	<repositories>
+		<repository>
+			<id>synaptix-snapshots-repository</id>
+			<url>http://nexus.synaptix-labs.com/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
 </project>
