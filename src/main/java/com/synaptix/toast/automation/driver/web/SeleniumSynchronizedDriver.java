@@ -18,7 +18,6 @@ public class SeleniumSynchronizedDriver implements SynchronizedDriver<WebElement
 
 	public SeleniumSynchronizedDriver() {
 		this.driver = DriverFactory.getFactory().getChromeDriver();
-		// GetEval("selenium.browserbot.setShouldHighlightElement(true)");
 	}
 
 	public SeleniumSynchronizedDriver(
