@@ -55,29 +55,20 @@ public abstract class AbstractWebActionAdapter {
 
 	@Action(id="click_on_web_component", action = "Click on " + WEB_COMPONENT, description = "")
 	public ITestResult clickOn(IWebAutoElement<WebElement> pageField) throws Exception {
-		pageField.getWebElement().click();
-		return new SuccessResult();
-	}
-	
-	@Action(id="click_on_web_component_alias", action = "Click on " + VALUE_REGEX, description = "")
-	public ITestResult clickOn( String alias) throws Exception {
-		WebAutoElement webAutoElement = (WebAutoElement) repo.getWebComponents().get(alias);
-		return clickOn(webAutoElement);
+		if(pageField.getWebElement() != null){
+			pageField.getWebElement().click();
+			return new SuccessResult();
+		}
+		return new FailureResult("Selector not found: " + pageField.getDescriptor().getLocator());
 	}
 	
 	@Action(id="select_in_web_component", action = "Select " + VALUE_REGEX + " in " + WEB_COMPONENT, description = "")
 	public ITestResult selectAtPos(String pos, IWebAutoElement<WebElement> pageFieldAuto) throws Exception {
 		WebSelectElement pageField = (WebSelectElement) pageFieldAuto;
 		pageField.selectByIndex(Integer.valueOf(pos));
-		return new SuccessResult();
+		return new SuccessResult(pageField.getWebElement().getText());
 	}
-	
-	@Action(id="select_in_web_component_alias", action = "Select " + VALUE_REGEX + " in " + VALUE_REGEX, description = "")
-	public ITestResult selectAtPos(String pos, String alias) throws Exception {
-		WebAutoElement webAutoElement = (WebAutoElement) repo.getWebComponents().get(alias);
-		return selectAtPos(pos, webAutoElement);
-	}
-	
+
 	@Action(id="component_alias", action = "With " + WEB_COMPONENT + " as " + VALUE_REGEX, description = "")
 	public ITestResult setComponentAlias(IWebAutoElement<WebElement> pageFieldAuto, String alias) throws Exception {
 		repo.getWebComponents().put(alias, pageFieldAuto);

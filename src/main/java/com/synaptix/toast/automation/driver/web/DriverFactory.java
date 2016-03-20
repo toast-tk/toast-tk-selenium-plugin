@@ -76,49 +76,6 @@ public class DriverFactory {
 		return driver;
 	}
 
-	public WebDriver getUiLessWebDriver() {
-		MyHtmlDriver driver = new MyHtmlDriver(BrowserVersion.FIREFOX_38);
-		driver.setJavascriptEnabled(true);
-		driver.manage().timeouts().setScriptTimeout(10, TimeUnit.SECONDS);
-		return driver;
-	}
 
-	public Selenium getUnwrappedRemoteSelenium(
-		String baseUrl) {
-		Selenium selenium = new DefaultSelenium("localhost", 4444, "*firefox", baseUrl);
-		selenium.start();
-		return selenium;
-	}
 
-	static class MyHtmlDriver extends HtmlUnitDriver {
-		WebClient myClient;
-		public MyHtmlDriver() {
-			super();
-		}
-		public MyHtmlDriver(
-			BrowserVersion verion) {
-			super(verion);
-		}
-		public WebClient getClient() {
-			return myClient;
-		}
-		@Override
-		protected void get(
-			URL fullUrl) {
-			super.get(fullUrl);
-		}
-		@Override
-		protected WebClient modifyWebClient(
-			WebClient client) {
-			myClient = client;
-			client.getCookieManager().setCookiesEnabled(true);
-			client.getOptions().setJavaScriptEnabled(true);
-			client.getOptions().setCssEnabled(true);
-			client.getOptions().setPopupBlockerEnabled(false);
-			client.setIncorrectnessListener(new SilentIncorrectnessListener());
-			client.setCssErrorHandler(new QuietCssErrorHandler());
-			client.setAjaxController(new NicelyResynchronizingAjaxController());
-			return client;
-		}
-	}
 }
