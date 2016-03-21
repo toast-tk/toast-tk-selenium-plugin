@@ -3,15 +3,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.synaptix.toast</groupId>
 	<artifactId>toast-tk-selenium-plugin</artifactId>
-	<version>0.1.1</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<name>Toast Toolkit - Selenium Plugin</name>
 	<description>
 	    Toast TK Engine Selenium Plugin
 	</description>
 	<properties>
 		<root-directory>${project.basedir}</root-directory>
-		<project.version>0.1.1</project.version>
-		<toast.version>0.1.1</toast.version>
+		<project.version>0.1.2-SNAPSHOT</project.version>
+		<toast.version>0.1.2-SNAPSHOT</toast.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
