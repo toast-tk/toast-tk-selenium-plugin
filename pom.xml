@@ -195,20 +195,24 @@
 			</activation>
 			<distributionManagement>
 				<repository>
-					<id>synaptix-releases-repository</id>
-					<url>http://nexus.synaptix-labs.com/content/repositories/releases/</url>
+					<id>talanlabs-releases-repository</id>
+					<url>http://nexus.talanlabs.com/content/repositories/releases/</url>
 				</repository>
 				<snapshotRepository>
-					<id>synaptix-snapshots-repository</id>
-					<url>http://nexus.synaptix-labs.com/content/repositories/snapshots/</url>
+					<id>talanlabs-snapshots-repository</id>
+					<url>http://nexus.talanlabs.com/content/repositories/snapshots/</url>
 				</snapshotRepository>
 			</distributionManagement>
 		</profile>
 	</profiles>
 	<repositories>
 		<repository>
-			<id>synaptix-snapshots-repository</id>
-			<url>http://nexus.synaptix-labs.com/content/repositories/snapshots/</url>
+			<id>talanlabs-snapshots-repository</id>
+			<url>http://nexus.talanlabs.com/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>talanlabs-releases-repository</id>
+			<url>http://nexus.talanlabs.com/content/repositories/releases/</url>
 		</repository>
 	</repositories>
 </project>
