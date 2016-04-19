@@ -26,8 +26,8 @@ import com.synaptix.toast.runtime.IActionItemRepository;
 @ActionAdapter(name="default-web-driver", value= ActionAdapterKind.web)
 public abstract class AbstractWebActionAdapter {
 
-	private final SeleniumSynchronizedDriver driver;
-	private final IActionItemRepository repo;
+	protected final SeleniumSynchronizedDriver driver;
+	protected final IActionItemRepository repo;
 
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
