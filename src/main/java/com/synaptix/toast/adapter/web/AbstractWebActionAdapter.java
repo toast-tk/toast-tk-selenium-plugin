@@ -33,9 +33,7 @@ public abstract class AbstractWebActionAdapter {
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
 		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getChromeDriver());
-		for (IFeedableWebPage page : repository.getWebPages()) {
-			((DefaultWebPage)page).setDriver(driver);
-		}
+		
 	}
 
 	@Action(id="navigate", action = "Open browser at "+ VALUE_REGEX, description = "")
@@ -44,6 +42,9 @@ public abstract class AbstractWebActionAdapter {
 			url = "http://" + url;
 		}
 		driver.getWebDriver().get(url);
+		for (IFeedableWebPage page : repo.getWebPages()) {
+			((DefaultWebPage)page).setDriver(driver);
+		}
 		return new SuccessResult();
 	}
 

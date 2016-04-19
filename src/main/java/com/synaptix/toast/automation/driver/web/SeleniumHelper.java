@@ -2,6 +2,8 @@ package com.synaptix.toast.automation.driver.web;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,6 +12,9 @@ import com.synaptix.toast.automation.api.IMiniResult;
 import com.synaptix.toast.core.runtime.IWebElementDescriptor;
 
 public class SeleniumHelper {
+
+
+	private static final Logger LOG = LogManager.getLogger(SeleniumHelper.class);
 
 	public static void wait(
 		int timeMs) {
@@ -55,8 +60,7 @@ public class SeleniumHelper {
 			}
 		}
 		catch(IndexOutOfBoundsException e) {
-			System.err.println("Locator: " + item.getLocator() + " - Position: " + item.getPosition());
-			e.printStackTrace();
+			LOG.error("Locator: " + item.getLocator() + " - Position: " + item.getPosition() + " - Not Found !");
 		}
 		return el;
 	}
