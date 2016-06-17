@@ -32,7 +32,7 @@ public abstract class AbstractWebActionAdapter {
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
-		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getChromeDriver());
+		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getConfigWebDriver());
 		
 	}
 
