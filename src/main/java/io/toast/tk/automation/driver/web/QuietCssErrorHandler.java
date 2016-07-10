@@ -1,4 +1,4 @@
-package com.synaptix.toast.automation.driver.web;
+package io.toast.tk.automation.driver.web;
 
 import org.w3c.css.sac.CSSException;
 import org.w3c.css.sac.CSSParseException;

@@ -1,6 +1,6 @@
-package com.synaptix.toast.adapter.web;
+package io.toast.tk.adapter.web;
 
-import com.synaptix.toast.automation.driver.web.SynchronizedDriver;
+import io.toast.tk.automation.driver.web.SynchronizedDriver;
 
 public interface IDrivableWebPage {
 

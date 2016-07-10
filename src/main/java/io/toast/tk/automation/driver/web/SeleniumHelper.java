@@ -1,4 +1,4 @@
-package com.synaptix.toast.automation.driver.web;
+package io.toast.tk.automation.driver.web;
 
 import java.util.List;
 
@@ -8,8 +8,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-import com.synaptix.toast.automation.api.IMiniResult;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
+import io.toast.tk.automation.api.IMiniResult;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class SeleniumHelper {
 

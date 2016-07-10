@@ -1,12 +1,10 @@
-package com.synaptix.toast.automation.driver.web;
+package io.toast.tk.automation.driver.web;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,8 +16,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
-import com.synaptix.toast.adapter.constant.AdaptersConfig;
-import com.synaptix.toast.adapter.constant.AdaptersConfigProvider;
+import io.toast.tk.adapter.constant.AdaptersConfig;
+import io.toast.tk.adapter.constant.AdaptersConfigProvider;
 
 public class DriverFactory {
 

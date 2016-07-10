@@ -1,4 +1,4 @@
-package com.synaptix.toast.adapter.web.component;
+package io.toast.tk.adapter.web.component;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
+import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class WebTableElement extends WebAutoElement {
 	

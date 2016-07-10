@@ -1,15 +1,15 @@
-package com.synaptix.toast.adapter.web.component;
+package io.toast.tk.adapter.web.component;
 
 import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-import com.synaptix.toast.adapter.web.ISyncCall;
-import com.synaptix.toast.automation.driver.web.SynchronizedDriver;
-import com.synaptix.toast.core.runtime.IFeedableWebPage;
-import com.synaptix.toast.core.runtime.IWebAutoElement;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
+import io.toast.tk.adapter.web.ISyncCall;
+import io.toast.tk.automation.driver.web.SynchronizedDriver;
+import io.toast.tk.core.runtime.IFeedableWebPage;
+import io.toast.tk.core.runtime.IWebAutoElement;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class WebAutoElement implements IWebAutoElement<WebElement>{
 

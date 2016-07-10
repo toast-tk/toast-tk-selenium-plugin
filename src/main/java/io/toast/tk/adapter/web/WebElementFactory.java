@@ -1,15 +1,16 @@
-package com.synaptix.toast.adapter.web;
+package io.toast.tk.adapter.web;
 
-import com.synaptix.toast.adapter.web.component.WebAutoElement;
-import com.synaptix.toast.adapter.web.component.WebButtonElement;
-import com.synaptix.toast.adapter.web.component.WebContainerElement;
-import com.synaptix.toast.adapter.web.component.WebInputElement;
-import com.synaptix.toast.adapter.web.component.WebLinkElement;
-import com.synaptix.toast.adapter.web.component.WebSelectElement;
-import com.synaptix.toast.adapter.web.component.WebTableElement;
-import com.synaptix.toast.core.adapter.AutoWebType;
-import com.synaptix.toast.core.runtime.IWebAutoElement;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
+
+import io.toast.tk.adapter.web.component.WebAutoElement;
+import io.toast.tk.adapter.web.component.WebButtonElement;
+import io.toast.tk.adapter.web.component.WebContainerElement;
+import io.toast.tk.adapter.web.component.WebInputElement;
+import io.toast.tk.adapter.web.component.WebLinkElement;
+import io.toast.tk.adapter.web.component.WebSelectElement;
+import io.toast.tk.adapter.web.component.WebTableElement;
+import io.toast.tk.core.adapter.AutoWebType;
+import io.toast.tk.core.runtime.IWebAutoElement;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class WebElementFactory implements IWebComponentFactory{
 
