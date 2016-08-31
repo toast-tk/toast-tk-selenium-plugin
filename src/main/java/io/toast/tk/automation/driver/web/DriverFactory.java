@@ -38,7 +38,7 @@ public class DriverFactory {
 	
 	public RemoteWebDriver getConfigWebDriver() {
 		if (config.getWebDriver() == null) {
-			return getFirefoxDriver();
+			return getChromeDriver();
 		}
 		WebDriverEnum webDriverEnum = WebDriverEnum.valueOf(config.getWebDriver().toUpperCase());
 		switch (webDriverEnum) {
