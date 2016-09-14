@@ -55,7 +55,7 @@ public class SeleniumHelper {
 				return null;
 			}
 		} catch (IndexOutOfBoundsException e) {
-			LOG.error("Locator: " + item.getLocator() + " - Position: " + item.getPosition() + " - Not Found !");
+			LOG.error("Locator: " + item.getLocator() + " at position " + item.getPosition() + " not Found", e);
 		}
 		return null;
 	}
