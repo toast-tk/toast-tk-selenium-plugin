@@ -1,7 +1,7 @@
-package com.synaptix.toast.adapter.web.component;
+package io.toast.tk.adapter.web.component;
 
-import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
+import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class WebContainerElement extends WebAutoElement {
 

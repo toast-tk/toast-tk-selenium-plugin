@@ -1,4 +1,4 @@
-package com.synaptix.toast.automation.api;
+package io.toast.tk.automation.api;
 
 public interface IMiniResult {
 

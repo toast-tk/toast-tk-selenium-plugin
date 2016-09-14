@@ -1,4 +1,4 @@
-package com.synaptix.toast.adapter.web;
+package io.toast.tk.adapter.web;
 
 import org.openqa.selenium.WebElement;
 

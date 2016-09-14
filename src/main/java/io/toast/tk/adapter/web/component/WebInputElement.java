@@ -1,11 +1,11 @@
-package com.synaptix.toast.adapter.web.component;
+package io.toast.tk.adapter.web.component;
 
-import com.synaptix.toast.adapter.web.HasStringValue;
-import com.synaptix.toast.adapter.web.HasTextInput;
-import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.report.SuccessResult;
-import com.synaptix.toast.core.runtime.IWebElementDescriptor;
-import com.synaptix.toast.dao.domain.api.test.ITestResult;
+import io.toast.tk.adapter.web.HasStringValue;
+import io.toast.tk.adapter.web.HasTextInput;
+import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
+import io.toast.tk.core.runtime.IWebElementDescriptor;
+import io.toast.tk.dao.core.report.SuccessResult;
+import io.toast.tk.dao.domain.api.test.ITestResult;
 
 public class WebInputElement extends WebAutoElement implements HasTextInput, HasStringValue {
 

@@ -1,16 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.synaptix.toast</groupId>
+	<groupId>io.toast-tk</groupId>
 	<artifactId>toast-tk-selenium-plugin</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.4-SNAPSHOT</version>
 	<name>Toast Toolkit - Selenium Plugin</name>
 	<description>
 	    Toast TK Engine Selenium Plugin
 	</description>
 	<properties>
 		<root-directory>${project.basedir}</root-directory>
-		<toast.version>0.1.2</toast.version>
+		<toast.version>0.1.4-SNAPSHOT</toast.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -18,6 +18,10 @@
 		<maven-resources-plugin.version>2.5</maven-resources-plugin.version>
 		<maven-dependency-plugin.version>2.4</maven-dependency-plugin.version>
 		<maven-jar-plugin.version>2.4</maven-jar-plugin.version>
+		<maven-gpg-plugin.version>1.5</maven-gpg-plugin.version>
+		<maven-release-plugin.version>2.4</maven-release-plugin.version>
+		<maven-source-plugin.version>2.0.4</maven-source-plugin.version>
+		<maven-javadoc-plugin.version>2.3</maven-javadoc-plugin.version>
 		<maven-surefire-plugin.version>2.12.4</maven-surefire-plugin.version>
 		<maven-eclipse-plugin.version>2.8</maven-eclipse-plugin.version>
 		<build-helper-maven-plugin>1.7</build-helper-maven-plugin>
@@ -151,6 +155,35 @@
 						<autoVersionSubmodules>true</autoVersionSubmodules>
 					</configuration>
 				</plugin>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.jacoco</groupId>
+										<artifactId>
+											jacoco-maven-plugin
+										</artifactId>
+										<versionRange>
+											[0.7.4.201502262128,)
+										</versionRange>
+										<goals>
+											<goal>prepare-agent</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<execute/>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 	</build>
@@ -161,39 +194,80 @@
 			<artifactId>selenium-server</artifactId>
 			<version>${selenium.version}</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>com.synaptix.toast</groupId>
+			<groupId>io.toast-tk</groupId>
 			<artifactId>toast-tk-adapters-api</artifactId>
 			<version>${toast.version}</version>
 		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
-			<id>DEPLOY_NEXUS_SYNAPTIX</id>
+			<id>deploy</id>
 			<activation>
 				<activeByDefault>false</activeByDefault>
 			</activation>
 			<distributionManagement>
-				<repository>
-					<id>talanlabs-releases-repository</id>
-					<url>http://nexus.talanlabs.com/content/repositories/releases/</url>
-				</repository>
 				<snapshotRepository>
-					<id>talanlabs-snapshots-repository</id>
-					<url>http://nexus.talanlabs.com/content/repositories/snapshots/</url>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 				</snapshotRepository>
 			</distributionManagement>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-release-plugin</artifactId>
+						<version>${maven-release-plugin.version}</version>
+						<configuration>
+							<autoVersionSubmodules>true</autoVersionSubmodules>
+							<useReleaseProfile>false</useReleaseProfile>
+							<releaseProfiles>release</releaseProfiles>
+							<goals>deploy</goals>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<version>${maven-source-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>${maven-javadoc-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 	</profiles>
-	<repositories>
-		<repository>
-			<id>talanlabs-snapshots-repository</id>
-			<url>http://nexus.talanlabs.com/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
-			<id>talanlabs-releases-repository</id>
-			<url>http://nexus.talanlabs.com/content/repositories/releases/</url>
-		</repository>
-	</repositories>
 </project>

@@ -1,27 +1,30 @@
-package com.synaptix.toast.adapter.web;
+package io.toast.tk.adapter.web;
 
-import static com.synaptix.toast.core.adapter.ActionAdapterSentenceRef.VALUE_REGEX;
-import static com.synaptix.toast.core.adapter.ActionAdapterSentenceRef.WEB_COMPONENT;
+import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.VALUE_REGEX;
+import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.WEB_COMPONENT;
 
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
 
 import com.google.inject.Inject;
-import com.synaptix.toast.adapter.web.component.DefaultWebPage;
-import com.synaptix.toast.adapter.web.component.WebAutoElement;
-import com.synaptix.toast.adapter.web.component.WebSelectElement;
-import com.synaptix.toast.automation.driver.web.DriverFactory;
-import com.synaptix.toast.automation.driver.web.SeleniumSynchronizedDriver;
-import com.synaptix.toast.core.adapter.ActionAdapterKind;
-import com.synaptix.toast.core.annotation.Action;
-import com.synaptix.toast.core.annotation.ActionAdapter;
-import com.synaptix.toast.core.report.FailureResult;
-import com.synaptix.toast.core.report.SuccessResult;
-import com.synaptix.toast.core.runtime.IFeedableWebPage;
-import com.synaptix.toast.core.runtime.IWebAutoElement;
-import com.synaptix.toast.dao.domain.api.test.ITestResult;
-import com.synaptix.toast.runtime.IActionItemRepository;
+import io.toast.tk.core.adapter.ActionAdapterKind;
+import io.toast.tk.core.annotation.Action;
+import io.toast.tk.core.annotation.ActionAdapter;
+import io.toast.tk.core.runtime.IFeedableWebPage;
+import io.toast.tk.core.runtime.IWebAutoElement;
+import io.toast.tk.dao.core.report.FailureResult;
+import io.toast.tk.dao.core.report.SuccessResult;
+import io.toast.tk.dao.domain.api.test.ITestResult;
+import io.toast.tk.runtime.IActionItemRepository;
+
+import io.toast.tk.adapter.web.component.DefaultWebPage;
+import io.toast.tk.adapter.web.component.WebAutoElement;
+import io.toast.tk.adapter.web.component.WebSelectElement;
+import io.toast.tk.automation.driver.web.DriverFactory;
+import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
 
 @ActionAdapter(name="default-web-driver", value= ActionAdapterKind.web)
 public abstract class AbstractWebActionAdapter {
@@ -32,7 +35,7 @@ public abstract class AbstractWebActionAdapter {
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
-		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getConfigWebDriver());
+		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getChromeDriver());
 		
 	}
 
@@ -147,5 +150,21 @@ public abstract class AbstractWebActionAdapter {
 	public ITestResult closeBrowser() {
 		driver.getWebDriver().quit();
 		return new SuccessResult();
+	}
+	
+	@Action(id="double_click_on_web_component", action = "Double click on " + WEB_COMPONENT, description = "")
+	public ITestResult doubleClickOn(IWebAutoElement<WebElement> pageField) throws Exception {
+		if(pageField.getWebElement().isDisplayed()) {
+			int x = pageField.getWebElement().getLocation().getX();
+			int y = pageField.getWebElement().getLocation().getY();
+			Robot robot = new Robot();
+			robot.mouseMove(x, y);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+			return new SuccessResult();
+		}
+		return new FailureResult("Element not found : " + pageField.getDescriptor().getLocator());
 	}
 }
