@@ -3,6 +3,8 @@ package io.toast.tk.adapter.web;
 import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.VALUE_REGEX;
 import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.WEB_COMPONENT;
 
+import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.util.List;
 
 import org.openqa.selenium.WebElement;
@@ -33,7 +35,7 @@ public abstract class AbstractWebActionAdapter {
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
-		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getConfigWebDriver());
+		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getChromeDriver());
 		
 	}
 
@@ -148,5 +150,21 @@ public abstract class AbstractWebActionAdapter {
 	public ITestResult closeBrowser() {
 		driver.getWebDriver().quit();
 		return new SuccessResult();
+	}
+	
+	@Action(id="double_click_on_web_component", action = "Double click on " + WEB_COMPONENT, description = "")
+	public ITestResult doubleClickOn(IWebAutoElement<WebElement> pageField) throws Exception {
+		if(pageField.getWebElement().isDisplayed()) {
+			int x = pageField.getWebElement().getLocation().getX();
+			int y = pageField.getWebElement().getLocation().getY();
+			Robot robot = new Robot();
+			robot.mouseMove(x, y);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+			robot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+			return new SuccessResult();
+		}
+		return new FailureResult("Element not found : " + pageField.getDescriptor().getLocator());
 	}
 }

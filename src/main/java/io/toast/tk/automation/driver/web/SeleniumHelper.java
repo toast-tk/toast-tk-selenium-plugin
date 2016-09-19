@@ -13,90 +13,82 @@ import io.toast.tk.core.runtime.IWebElementDescriptor;
 
 public class SeleniumHelper {
 
-
 	private static final Logger LOG = LogManager.getLogger(SeleniumHelper.class);
 
 	public static void wait(
-		int timeMs) {
+			int timeMs) {
 		try {
 			Thread.sleep(timeMs);
-		}
-		catch(InterruptedException e1) {
-			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			LOG.warn("Interruption during wait", e);
 		}
 	}
 
 	public static void waitCondition(
-		int retry,
-		int timeMs,
-		IMiniResult condition) {
+			int retry,
+			int timeMs,
+			IMiniResult condition) {
 		try {
-			for(int i = 0; i <= retry; i++) {
+			for (int i = 0; i <= retry; i++) {
 				Thread.sleep(timeMs);
-				if(condition.result()) {
+				if (condition.result()) {
 					break;
 				}
 			}
-		}
-		catch(InterruptedException e1) {
-			e1.printStackTrace();
+		} catch (InterruptedException e) {
+			LOG.warn("Interruption during wait", e);
 		}
 	}
 
 	public static WebElement positionSelect(
-		WebDriver driver,
-		IWebElementDescriptor item) {
-		WebElement el = null;
+			WebDriver driver,
+			IWebElementDescriptor item) {
 		try {
-			switch(item.getMethod()) {
-				case CSS :
-					return driver.findElements(By.cssSelector(item.getLocator())).get(item.getPosition());
-				case XPATH :
-					return driver.findElements(By.xpath(item.getLocator())).get(item.getPosition());
-				case ID :
-					return driver.findElement(By.id(item.getLocator()));
-				default :
-					return null;
+			switch (item.getMethod()) {
+			case CSS:
+				return driver.findElements(By.cssSelector(item.getLocator())).get(item.getPosition());
+			case XPATH:
+				return driver.findElements(By.xpath(item.getLocator())).get(item.getPosition());
+			case ID:
+				return driver.findElement(By.id(item.getLocator()));
+			default:
+				return null;
 			}
+		} catch (IndexOutOfBoundsException e) {
+			LOG.error("Locator: " + item.getLocator() + " at position " + item.getPosition() + " not Found", e);
 		}
-		catch(IndexOutOfBoundsException e) {
-			LOG.error("Locator: " + item.getLocator() + " - Position: " + item.getPosition() + " - Not Found !");
-		}
-		return el;
+		return null;
 	}
 
 	public static WebElement singleSelect(
-		WebDriver driver,
-		IWebElementDescriptor item) {
-		switch(item.getMethod()) {
-			case CSS :
-				return driver.findElement(By.cssSelector(item.getLocator()));
-			case XPATH :
-				return driver.findElement(By.xpath(item.getLocator()));
-			case ID :
-				return driver.findElement(By.id(item.getLocator()));
-			default :
-				return null;
+			WebDriver driver,
+			IWebElementDescriptor item) {
+		switch (item.getMethod()) {
+		case CSS:
+			return driver.findElement(By.cssSelector(item.getLocator()));
+		case XPATH:
+			return driver.findElement(By.xpath(item.getLocator()));
+		case ID:
+			return driver.findElement(By.id(item.getLocator()));
+		default:
+			return null;
 		}
 	}
 
 	public static List<WebElement> selectAll(WebDriver driver,
 			IWebElementDescriptor item) {
-		List<WebElement> elements = null;
 		try {
-			switch(item.getMethod()) {
-				case CSS :
-					return driver.findElements(By.cssSelector(item.getLocator()));
-				case XPATH :
-					return driver.findElements(By.xpath(item.getLocator()));
-				default :
-					return null;
+			switch (item.getMethod()) {
+			case CSS:
+				return driver.findElements(By.cssSelector(item.getLocator()));
+			case XPATH:
+				return driver.findElements(By.xpath(item.getLocator()));
+			default:
+				return null;
 			}
+		} catch (IndexOutOfBoundsException e) {
+			LOG.error("Locator: " + item.getLocator() + " - Position: " + item.getPosition(), e);
 		}
-		catch(IndexOutOfBoundsException e) {
-			System.err.println("Locator: " + item.getLocator() + " - Position: " + item.getPosition());
-			e.printStackTrace();
-		}
-		return elements;
+		return null;
 	}
 }
