@@ -36,7 +36,9 @@ public abstract class AbstractWebActionAdapter {
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
 		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getConfigWebDriver());
-		
+		for (IFeedableWebPage page : repo.getWebPages()) {
+			((DefaultWebPage)page).setDriver(driver);
+		}
 	}
 
 	@Action(id="navigate", action = "Open browser at "+ VALUE_REGEX, description = "")
