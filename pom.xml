@@ -3,14 +3,14 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>io.toast-tk</groupId>
 	<artifactId>toast-tk-selenium-plugin</artifactId>
-	<version>0.1.4-SNAPSHOT</version>
+	<version>0.1.5-SNAPSHOT</version>
 	<name>Toast Toolkit - Selenium Plugin</name>
 	<description>
 	    Toast TK Engine Selenium Plugin
 	</description>
 	<properties>
 		<root-directory>${project.basedir}</root-directory>
-		<toast.version>0.1.4-SNAPSHOT</toast.version>
+		<toast.version>0.1.5-SNAPSHOT</toast.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -212,6 +212,10 @@
 					<id>ossrh</id>
 					<url>https://oss.sonatype.org/content/repositories/snapshots</url>
 				</snapshotRepository>
+				<repository>
+					<id>ossrh</id>
+					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+				</repository>
 			</distributionManagement>
 			<build>
 				<plugins>
