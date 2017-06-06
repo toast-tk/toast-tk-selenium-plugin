@@ -82,7 +82,7 @@ public abstract class AbstractWebActionAdapter {
 	}
 	
 	@Action(id="select_at_component", action = "Select the " + VALUE_REGEX + "th " + WEB_COMPONENT + " as " + VALUE_REGEX, description = "")
-	public ITestResult selectComponent(String pos, IWebAutoElement<WebElement> pageFieldAuto, String varName) throws Exception {
+	public ITestResult selectComponentAt(String pos, IWebAutoElement<WebElement> pageFieldAuto, String varName) throws Exception {
 		int componentPos = Integer.valueOf(pos) - 1;
 		pageFieldAuto.getDescriptor().setPosition(componentPos);
 		repo.getWebComponents().put(varName, pageFieldAuto);
@@ -90,11 +90,11 @@ public abstract class AbstractWebActionAdapter {
 	}
 	
 	@Action(id="select_at_component_alias", action = "Select the " + VALUE_REGEX + "th " + VALUE_REGEX + " as " + VALUE_REGEX, description = "")
-	public ITestResult selectComponent(String pos, 
+	public ITestResult selectComponentByAlias(String pos,
 			String alias,
 			String varName) throws Exception {
 		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
-		return selectComponent(pos, webAutoElement, varName);
+		return selectComponentAt(pos, webAutoElement, varName);
 	}
 	
 	@Action(id="web_component_exists", action = WEB_COMPONENT + " exists", description = "")
