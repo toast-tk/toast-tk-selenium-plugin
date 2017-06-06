@@ -169,4 +169,12 @@ public abstract class AbstractWebActionAdapter {
 		}
 		return new FailureResult("Element not found : " + pageField.getDescriptor().getLocator());
 	}
+	
+	@Action(id="wait", action = "Wait for " +VALUE_REGEX+ " seconds", description = "Attendre n secondes avant la prochaine action")
+	public ITestResult wait(
+		String time)
+		throws Exception {
+		Thread.sleep(Integer.valueOf(time) * 1000);
+		return new SuccessResult();
+	}
 }
