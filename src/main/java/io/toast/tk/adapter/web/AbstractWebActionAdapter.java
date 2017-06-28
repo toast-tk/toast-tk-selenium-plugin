@@ -1,8 +1,5 @@
 package io.toast.tk.adapter.web;
 
-import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.VALUE_REGEX;
-import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.WEB_COMPONENT;
-
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.util.List;
@@ -10,6 +7,12 @@ import java.util.List;
 import org.openqa.selenium.WebElement;
 
 import com.google.inject.Inject;
+
+import io.toast.tk.adapter.web.component.DefaultWebPage;
+import io.toast.tk.adapter.web.component.WebAutoElement;
+import io.toast.tk.adapter.web.component.WebSelectElement;
+import io.toast.tk.automation.driver.web.DriverFactory;
+import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
 import io.toast.tk.core.adapter.ActionAdapterKind;
 import io.toast.tk.core.annotation.Action;
 import io.toast.tk.core.annotation.ActionAdapter;
@@ -20,11 +23,8 @@ import io.toast.tk.dao.core.report.SuccessResult;
 import io.toast.tk.dao.domain.api.test.ITestResult;
 import io.toast.tk.runtime.IActionItemRepository;
 
-import io.toast.tk.adapter.web.component.DefaultWebPage;
-import io.toast.tk.adapter.web.component.WebAutoElement;
-import io.toast.tk.adapter.web.component.WebSelectElement;
-import io.toast.tk.automation.driver.web.DriverFactory;
-import io.toast.tk.automation.driver.web.SeleniumSynchronizedDriver;
+import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.VALUE_REGEX;
+import static io.toast.tk.core.adapter.ActionAdapterSentenceRef.WEB_COMPONENT;
 
 @ActionAdapter(name="default-web-driver", value= ActionAdapterKind.web)
 public abstract class AbstractWebActionAdapter {
@@ -35,8 +35,10 @@ public abstract class AbstractWebActionAdapter {
 	@Inject
 	public AbstractWebActionAdapter(IActionItemRepository repository) {
 		this.repo = repository;
-		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getChromeDriver());
-		
+		driver = new SeleniumSynchronizedDriver(DriverFactory.getFactory().getConfigWebDriver());
+		for (IFeedableWebPage page : repo.getWebPages()) {
+			((DefaultWebPage)page).setDriver(driver);
+		}
 	}
 
 	@Action(id="navigate", action = "Open browser at "+ VALUE_REGEX, description = "")
@@ -80,7 +82,7 @@ public abstract class AbstractWebActionAdapter {
 	}
 	
 	@Action(id="select_at_component", action = "Select the " + VALUE_REGEX + "th " + WEB_COMPONENT + " as " + VALUE_REGEX, description = "")
-	public ITestResult selectComponent(String pos, IWebAutoElement<WebElement> pageFieldAuto, String varName) throws Exception {
+	public ITestResult selectComponentAt(String pos, IWebAutoElement<WebElement> pageFieldAuto, String varName) throws Exception {
 		int componentPos = Integer.valueOf(pos) - 1;
 		pageFieldAuto.getDescriptor().setPosition(componentPos);
 		repo.getWebComponents().put(varName, pageFieldAuto);
@@ -88,11 +90,11 @@ public abstract class AbstractWebActionAdapter {
 	}
 	
 	@Action(id="select_at_component_alias", action = "Select the " + VALUE_REGEX + "th " + VALUE_REGEX + " as " + VALUE_REGEX, description = "")
-	public ITestResult selectComponent(String pos, 
+	public ITestResult selectComponentByAlias(String pos,
 			String alias,
 			String varName) throws Exception {
 		WebAutoElement webAutoElement = (WebAutoElement)repo.getWebComponents().get(alias);
-		return selectComponent(pos, webAutoElement, varName);
+		return selectComponentAt(pos, webAutoElement, varName);
 	}
 	
 	@Action(id="web_component_exists", action = WEB_COMPONENT + " exists", description = "")
@@ -166,5 +168,13 @@ public abstract class AbstractWebActionAdapter {
 			return new SuccessResult();
 		}
 		return new FailureResult("Element not found : " + pageField.getDescriptor().getLocator());
+	}
+	
+	@Action(id="wait", action = "Wait for " +VALUE_REGEX+ " seconds", description = "Attendre n secondes avant la prochaine action")
+	public ITestResult wait(
+		String time)
+		throws Exception {
+		Thread.sleep(Integer.valueOf(time) * 1000);
+		return new SuccessResult();
 	}
 }

@@ -63,7 +63,7 @@ public class DriverFactory {
 	public ChromeDriver getChromeDriver() {
 		System.setProperty("webdriver.chrome.driver", config.getWebDriverPath());
 		final ChromeDriver driver;
-		if(config.getIsSSl()){
+		if(config.isSSl()){
 			DesiredCapabilities capabilities = DesiredCapabilities.chrome();
 			capabilities.setCapability("chrome.switches", Arrays.asList("--ignore-certificate-errors"));
 			driver = new ChromeDriver(capabilities);
