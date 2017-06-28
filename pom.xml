@@ -8,6 +8,7 @@
 	<description>
 	    Toast TK Engine Selenium Plugin
 	</description>
+	<url>https://toast-tk.io/</url>
 	<properties>
 		<root-directory>${project.basedir}</root-directory>
 		<toast.version>0.1.5-SNAPSHOT</toast.version>
