@@ -217,6 +217,13 @@
 					<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 				</repository>
 			</distributionManagement>
+			<repositories>
+				<repository>
+					<id>ossrh-stagging</id>
+					<name>SONATYPE STAGGING REPOSITORY</name>
+					<url>https://oss.sonatype.org/content/groups/public</url>
+				</repository>
+			</repositories>
 			<build>
 				<plugins>
 					<plugin>
